@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,37 +10,38 @@ namespace fileEditor
 {
     internal class Program
     {
-        static void fileCreate(string path, string voidFile)
+        static void fileCreate(string path) // Создание файла
         {
             FileInfo MyFile = new FileInfo(path); // Путь до файла
-            FileInfo VoidFile = new FileInfo(voidFile); // Путь до пустого файла
-            StreamWriter mf = MyFile.CreateText();
-            StreamWriter vf = VoidFile.CreateText();
-
-            mf.WriteLine("This is a text");
-            mf.Close();
-            vf.Close();
+            using (StreamWriter mf = MyFile.CreateText());
         }
-        static void fileRead(string path) 
+        static void fileRead(string path) // Считывание первой строчки файла
         {
             using (StreamReader read = new StreamReader(path))
-            { 
-                Console.WriteLine(read.ReadLine()); // Считывание первой строчки файла
+            {
+                Console.WriteLine(read.ReadLine()); 
             }
         }
-        static void voidFileWrite(string voidFile) 
+        static void voidFileWrite(string path) // Запись строчки в пустой файл
         {
-            using (StreamWriter vf = new StreamWriter(voidFile)) // Путь до пустого файла
+            string[] lines = File.ReadAllLines(path); // Записываем кол-во строчек в массив
+            if (lines.Length == 0) // Проверяем, существуют-ли строчки в файле (Пустой \ не пустой)
             {
-                Console.Write("Text: ");
-                vf.WriteLine(Console.ReadLine()); // Принудительная запись строки в файл
+                Console.WriteLine("This file is empty");
+            }
+            else
+            {
+                using (StreamWriter vf = new StreamWriter(path)) // Путь до пустого файла
+                {
+                    vf.WriteLine(Console.ReadLine()); // Принудительная запись строки в файл
+                }
             }
         }
         static void fileReplace(string path)
         {
             using (FileStream fs = File.Create(path))
             {
-                byte[] info = new UTF8Encoding(true).GetBytes("This is replaced text"); // Перезапись файла
+                byte[] info = new UTF8Encoding(true).GetBytes(Console.ReadLine()); // Перезапись файла
                 fs.Write(info, 0, info.Length);
             }
         }
@@ -56,12 +57,10 @@ namespace fileEditor
         static void Main(string[] args)
         {
             string path = @"C:\Users\super\OneDrive\Desktop\files\MyFile.txt"; // Путь до файла с текстом
-            string voidFile = @"C:\Users\super\OneDrive\Desktop\files\voidFile.txt"; // Путь до пустого файла
-
-            fileCreate(path, voidFile); // Создание 2-х файлов: С текстом (Для последующего прочтения) и пустого (для записи)
-            fileRead(path); // Считывание строчки из файла с текстом
-            voidFileWrite(voidFile); // Принудительная запись строки в файл
-            fileReplace(path); // Перезапись файла с текстом
+            fileCreate(path); // Создание файла
+            fileRead(path); // Считывание первой строчки из файла
+            voidFileWrite(path); // Принудительная запись строки в файл
+            fileReplace(path); // Перезапись файла
             fileAddLine(path); // Добавление новой строки в файл
         }
     }
