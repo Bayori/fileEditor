@@ -17,8 +17,6 @@ namespace fileEditor
         }
         static void fileRead(string path) // Считывание первой строчки файла
         {
-
-            using (StreamReader read = new StreamReader(path))
             {
                 Console.Write("Line number: ");
                 try
