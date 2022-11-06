@@ -17,9 +17,18 @@ namespace fileEditor
         }
         static void fileRead(string path) // Считывание первой строчки файла
         {
+
             using (StreamReader read = new StreamReader(path))
             {
-                Console.WriteLine(read.ReadLine()); 
+                Console.Write("Line number: ");
+                try
+                {
+                    Console.WriteLine(File.ReadLines(path).Skip(Convert.ToInt32(Console.ReadLine())).First());
+                }
+                catch
+                {
+                    Console.WriteLine("Line not found");
+                }
             }
         }
         static void voidFileWrite(string path) // Запись строчки в пустой файл
@@ -59,7 +68,7 @@ namespace fileEditor
             fileRead(path); // Считывание первой строчки из файла
             voidFileWrite(path); // Принудительная запись строки в файл
             fileReplace(path); // Перезапись файла
-            fileAddLine(path); // Добавление новой строки в файл
+            fileAddLine(path); // Добавление новой строчки в файл
         }
     }
 }
