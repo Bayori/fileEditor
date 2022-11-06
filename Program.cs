@@ -24,8 +24,7 @@ namespace fileEditor
         }
         static void voidFileWrite(string path) // Запись строчки в пустой файл
         {
-            string[] lines = File.ReadAllLines(path); // Записываем кол-во строчек в массив
-            if (lines.Length == 0) // Проверяем, существуют-ли строчки в файле (Пустой \ не пустой)
+            if (File.ReadAllLines(path).Length == 0) // Проверяем, существуют-ли строчки в файле (Пустой \ не пустой)
             {
                 Console.WriteLine("This file is empty");
             }
@@ -49,7 +48,6 @@ namespace fileEditor
         {
             using (StreamWriter vf = new StreamWriter(path, true)) // Путь до файла
             {
-                Console.Write("Text: ");
                 vf.WriteLine("\n"+Console.ReadLine()); // Добавление строки в файл
             }
         }
